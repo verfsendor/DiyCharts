@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AttributeChart">
+        <attr name="Attribute_bgColor" format="color"/>
+        <attr name="Attribute_TextColor" format="color"/>
+        <attr name="Attribute_ChartColor" format="color"/>
+        <attr name="Attribute_CoverColor" format="color"/>
+        <attr name="Attribute_LineColor" format="color"/>
+        <attr name="Attribute_showAnim" format="boolean"/>
+    </declare-styleable>
+
+
+</resources>
