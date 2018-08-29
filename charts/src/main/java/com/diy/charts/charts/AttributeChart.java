@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.graphics.Picture;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
@@ -79,9 +80,10 @@ public class AttributeChart extends SurfaceView{
     private float scrollDistanceY;
 
     private ValueAnimator valueAnimator;
-
+    private Picture mPicture;
     private float animationValue;
     private boolean showAnim;
+    private boolean rePicture = true;//判断是否需要重新绘制表盘
     private ArrayList<AttributeChartData> mData;
     public AttributeChart(Context context) {
         super(context);
@@ -101,7 +103,7 @@ public class AttributeChart extends SurfaceView{
         init(attrs);
     }
 
-    public void getAttrs(AttributeSet attrs){
+    private void getAttrs(AttributeSet attrs){
         if(attrs != null){
             TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.AttributeChart);
 //            progressStrokeWidth = typedArray.getDimensionPixelOffset(R.styleable.CircleProgressBarView_progressStrokeWidth, defaultStrokeWidth);
@@ -114,7 +116,7 @@ public class AttributeChart extends SurfaceView{
         }
     }
 
-    public void init(AttributeSet attrs){
+    private void init(AttributeSet attrs){
         getAttrs(attrs);
         mData = new ArrayList<>();
         mPaths = new ArrayList<>();
@@ -186,7 +188,7 @@ public class AttributeChart extends SurfaceView{
         });
     }
 
-    public void initPaint(){
+    private void initPaint(){
         mTextPaint = new TextPaint();
         mTextPaint.setStrokeWidth(2f);
         mTextPaint.setTextSize(30);
@@ -216,6 +218,7 @@ public class AttributeChart extends SurfaceView{
 
     public void setData(ArrayList<AttributeChartData> data){
         this.mData = data;
+        rePicture = true;
         if(showAnim) {
             showStartAnimation();
         }else {
@@ -229,6 +232,7 @@ public class AttributeChart extends SurfaceView{
      */
     public void notifyDataChanged(ArrayList<AttributeChartData> data){
         this.mData = data;
+        rePicture = true;
         invalidate();
     }
 
@@ -257,73 +261,12 @@ public class AttributeChart extends SurfaceView{
             canvas.drawText("暂无数据",rect.centerX(),baseline, mTextPaint);
             return;
         }
-        int n = mData.size();
-        mPaths.clear();
-        int maxRadius = 0;
-        /**
-         * 遍历画雷达波纹横线，每隔固定距离，画圆，通过Pathmeasure获取固定等分长度的点坐标，依次两两相连
-         */
-        for(int i = getMeasuredWidth()/2 - LINE_WIDTH; i > CHART_PADDING; i = i - LINE_WIDTH){
-            Path path = new Path();
-            path.addCircle(getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2 - i,Path.Direction.CCW);
-            mPaths.add(path);
-            PathMeasure measure = new PathMeasure(path, false);     // 创建 PathMeasure
-            for(int j = 0; j < n ; j ++){
-                measure.getPosTan(measure.getLength() * j / n, pos1, null);
-                if(j + 1 >= n){
-                    measure.getPosTan(measure.getLength() * 0,pos2,null);
-                }else{
-                    measure.getPosTan(measure.getLength() * (j + 1)/n,pos2,null);
-                }
-                canvas.drawLine(pos1[0],pos1[1],pos2[0],pos2[1],mChartPaint);
-                /**
-                 * 判断距离，如果是最外的一层，获取等分点坐标后，坐标与圆心画雷达图纵向直线
-                 */
-                //判断，如果是最大的圆，获取固定点坐标画纵向线
-                if(i - LINE_WIDTH <= CHART_PADDING){
-                    maxRadius = getMeasuredWidth()/2 - i;
-                    canvas.drawLine(getMeasuredWidth()/2, getMeasuredHeight()/2, pos1[0], pos1[1], mChartPaint);
-                }
-            }
+        //表盘部分录制到picture上，在下次绘制时直接复用
+        if(rePicture){
+            recordPicture();
         }
+        canvas.drawPicture(mPicture);
 
-        /**
-         * 绘制属性名称，因为文字都是以左下角为锚点，所以进行判断不同象限采用不同的位移进行处理，使之均匀分布
-         */
-        PathMeasure pathMeasure = new PathMeasure(mPaths.get(mPaths.size() - 1), false);     // 创建 PathMeasure
-        for(int j = 0; j < n ; j ++) {
-            pathMeasure.getPosTan(pathMeasure.getLength() * j / n, pos4, null);
-            float width = mTextPaint.measureText(mData.get(j).getName()) + 5;
-            float height = width/mData.get(j).getName().length() + 5;
-            float distanx = pos4[0] - getMeasuredWidth() / 2;
-            float distany = pos4[1] - getMeasuredHeight() / 2;
-            if (distanx < 0 && distany < 0) {
-                canvas.drawText(mData.get(j).getName(), pos4[0] - width, pos4[1], mTextPaint);
-            } else if(distanx > 0 && distany > 0){
-                canvas.drawText(mData.get(j).getName(), pos4[0], pos4[1] + height, mTextPaint);
-            }else if(distanx < 0 && distany > 0){
-                canvas.drawText(mData.get(j).getName(), pos4[0] - width, pos4[1] + height, mTextPaint);
-            }else if(distanx > 0 && distany < 0){
-                canvas.drawText(mData.get(j).getName(), pos4[0], pos4[1], mTextPaint);
-            }else if(distany == 0 && distanx > 0){
-                canvas.drawText(mData.get(j).getName(), pos4[0], pos4[1] + height, mTextPaint);
-            }else if(distany == 0 && distanx < 0){
-                canvas.drawText(mData.get(j).getName(), pos4[0] - width, pos4[1] + height/2 , mTextPaint);
-            }else if(distanx == 0 && distany > 0){
-                canvas.drawText(mData.get(j).getName(), pos4[0] - width/2, pos4[1] , mTextPaint);
-            } else if(distanx == 0 && distany < 0){
-                canvas.drawText(mData.get(j).getName(), pos4[0] - width/2, pos4[1] - height , mTextPaint);
-            }
-        }
-
-        /**
-         * 遍历波纹层，获取圆上的坐标点，获取数据中最大的值确定坐标范围。得出每层波纹的坐标值并在角度为0的固定位置书写。
-         */
-        for(int i = 0; i < mPaths.size(); i ++){
-            PathMeasure measure = new PathMeasure(mPaths.get(i), false);
-            measure.getPosTan(0,pos5,null);
-            canvas.drawText("" + getMaxValues()/mPaths.size() * (i + 1), pos5[0],pos5[1] - 5, mTextPaint);
-        }
         /**
          * 遍历数据值，根据与最大坐标的比例，获得每个数据所在圆的半径。根据等分值获取具体点坐标，然后加入path中。
          */
@@ -376,7 +319,7 @@ public class AttributeChart extends SurfaceView{
      * 获得坐标度量最大值，数据列表中数据值的最大值，并进一位。确保坐标大于每一条数据
      * @return
      */
-    public int getMaxValues(){
+    private int getMaxValues(){
         if(mData == null || mData.size() == 0){
             return 0;
         }
@@ -393,7 +336,7 @@ public class AttributeChart extends SurfaceView{
     /**
      * 负责第一次设置数据时的显示动画
      */
-    public void showStartAnimation(){
+    private void showStartAnimation(){
         valueAnimator = ValueAnimator.ofFloat(0,1)
                 .setDuration(800);
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -415,5 +358,83 @@ public class AttributeChart extends SurfaceView{
         if(valueAnimator != null){
             valueAnimator.cancel();
         }
+    }
+
+    /**
+     * 将固定的表盘部分绘制在picture上进行复用
+     */
+    private void recordPicture(){
+        mPicture = new Picture();
+        Canvas canvas = mPicture.beginRecording(getMeasuredWidth(), getMeasuredHeight());
+        int maxRadius;
+        int n = mData.size();
+        mPaths.clear();
+        // 开始录制 (接收返回值Canvas)
+        /**
+         * 遍历画雷达波纹横线，每隔固定距离，画圆，通过Pathmeasure获取固定等分长度的点坐标，依次两两相连
+         */
+        for(int i = getMeasuredWidth()/2 - LINE_WIDTH; i > CHART_PADDING; i = i - LINE_WIDTH){
+            Path path = new Path();
+            path.addCircle(getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2 - i,Path.Direction.CCW);
+            Log.v("verf","name add path " + path);
+            mPaths.add(path);
+            PathMeasure measure = new PathMeasure(path, false);     // 创建 PathMeasure
+            for(int j = 0; j < n ; j ++){
+                measure.getPosTan(measure.getLength() * j / n, pos1, null);
+                if(j + 1 >= n){
+                    measure.getPosTan(measure.getLength() * 0,pos2,null);
+                }else{
+                    measure.getPosTan(measure.getLength() * (j + 1)/n,pos2,null);
+                }
+                canvas.drawLine(pos1[0],pos1[1],pos2[0],pos2[1],mChartPaint);
+                /**
+                 * 判断距离，如果是最外的一层，获取等分点坐标后，坐标与圆心画雷达图纵向直线
+                 */
+                //判断，如果是最大的圆，获取固定点坐标画纵向线
+                if(i - LINE_WIDTH <= CHART_PADDING){
+                    maxRadius = getMeasuredWidth()/2 - i;
+                    canvas.drawLine(getMeasuredWidth()/2, getMeasuredHeight()/2, pos1[0], pos1[1], mChartPaint);
+                }
+            }
+        }
+
+        /**
+         * 绘制属性名称，因为文字都是以左下角为锚点，所以进行判断不同象限采用不同的位移进行处理，使之均匀分布
+         */
+        PathMeasure pathMeasure = new PathMeasure(mPaths.get(mPaths.size() - 1), false);     // 创建 PathMeasure
+        for(int j = 0; j < n ; j ++) {
+            pathMeasure.getPosTan(pathMeasure.getLength() * j / n, pos4, null);
+            float width = mTextPaint.measureText(mData.get(j).getName()) + 5;
+            float height = width/mData.get(j).getName().length() + 5;
+            float distanx = pos4[0] - getMeasuredWidth() / 2;
+            float distany = pos4[1] - getMeasuredHeight() / 2;
+            if (distanx < 0 && distany < 0) {
+                canvas.drawText(mData.get(j).getName(), pos4[0] - width, pos4[1], mTextPaint);
+            } else if(distanx > 0 && distany > 0){
+                canvas.drawText(mData.get(j).getName(), pos4[0], pos4[1] + height, mTextPaint);
+            }else if(distanx < 0 && distany > 0){
+                canvas.drawText(mData.get(j).getName(), pos4[0] - width, pos4[1] + height, mTextPaint);
+            }else if(distanx > 0 && distany < 0){
+                canvas.drawText(mData.get(j).getName(), pos4[0], pos4[1], mTextPaint);
+            }else if(distany == 0 && distanx > 0){
+                canvas.drawText(mData.get(j).getName(), pos4[0], pos4[1] + height, mTextPaint);
+            }else if(distany == 0 && distanx < 0){
+                canvas.drawText(mData.get(j).getName(), pos4[0] - width, pos4[1] + height/2 , mTextPaint);
+            }else if(distanx == 0 && distany > 0){
+                canvas.drawText(mData.get(j).getName(), pos4[0] - width/2, pos4[1] , mTextPaint);
+            } else if(distanx == 0 && distany < 0){
+                canvas.drawText(mData.get(j).getName(), pos4[0] - width/2, pos4[1] - height , mTextPaint);
+            }
+        }
+        /**
+         * 遍历波纹层，获取圆上的坐标点，获取数据中最大的值确定坐标范围。得出每层波纹的坐标值并在角度为0的固定位置书写。
+         */
+        for(int i = 0; i < mPaths.size(); i ++){
+            PathMeasure measure = new PathMeasure(mPaths.get(i), false);
+            measure.getPosTan(0,pos5,null);
+            canvas.drawText("" + getMaxValues()/mPaths.size() * (i + 1), pos5[0],pos5[1] - 5, mTextPaint);
+        }
+        mPicture.endRecording();
+        rePicture = false;
     }
 }

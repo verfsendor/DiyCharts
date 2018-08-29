@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.diy.charts.charts.AttributeChart;
 import com.diy.charts.charts.beans.AttributeChartData;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         chart = (AttributeChart)findViewById(R.id.chart);
         chart.setEnabled(true);
-        AttributeChartData data1 = new AttributeChartData();
+        final AttributeChartData data1 = new AttributeChartData();
         data1.setName("属Add");
         data1.setValue(19);
         data.add(data1);
@@ -67,5 +68,16 @@ public class MainActivity extends AppCompatActivity {
             data.add(data9);
         }
         chart.setData(data);
+
+        findViewById(R.id.textview).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AttributeChartData data9 = new AttributeChartData();
+                data9.setName("徐镇东aa");
+                data9.setValue(11);
+                data.add(data9);
+                chart.notifyDataChanged(data);
+            }
+        });
     }
 }
