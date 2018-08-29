@@ -1,5 +1,4 @@
 package com.diy.charts.charts;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,7 +9,10 @@ import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.SurfaceView;
 import com.diy.charts.charts.beans.AttributeChartData;
 import java.util.ArrayList;
 
@@ -19,12 +21,14 @@ import java.util.ArrayList;
  * 属性列表
  */
 
-public class AttributeChart extends View{
+public class AttributeChart extends SurfaceView{
     private Context mContext;
     private TextPaint mTextPaint;
     private Paint mChartPaint;
     private Paint mCoverPaint;
     private ArrayList<Path> mPaths;
+    private ScaleGestureDetector mScaleGestureDetector;
+    private GestureDetector mGesturDetector;
     float []pos1 = new float[2];
     float []pos2 = new float[2];
     float []pos3 = new float[2];
@@ -34,6 +38,13 @@ public class AttributeChart extends View{
     private int mCoverColor = Color.parseColor("#809400D3");
     private final int LINE_WIDTH = 80;
     private final int CHART_PADDING = 100;
+
+    private float focusX;
+    private float focusY;
+    private float scaleValue = 1f;
+
+    private float scrollDistanceX;
+    private float scrollDistanceY;
 
     private ArrayList<AttributeChartData> mData;
     public AttributeChart(Context context) {
@@ -65,6 +76,66 @@ public class AttributeChart extends View{
         mData = new ArrayList<>();
         mPaths = new ArrayList<>();
         initPaint();
+        mScaleGestureDetector =  new ScaleGestureDetector(getContext(), new ScaleGestureDetector.OnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                focusX = detector.getFocusX();
+                focusY = detector.getFocusY();
+                scaleValue = scaleValue * detector.getScaleFactor();
+                //设置最大缩放比例
+                scaleValue =scaleValue > 3 ? 3 : scaleValue;
+                //当缩放比例接近原大小时，画布平移回原点
+                if(scaleValue > 0.9 && scaleValue < 1.1){
+                    scrollDistanceX = 0;
+                    scrollDistanceY = 0;
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector detector) {
+                return true;
+            }
+
+            @Override
+            public void onScaleEnd(ScaleGestureDetector detector) {
+            }
+        });
+        mGesturDetector = new GestureDetector(getContext(), new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if(scaleValue > 1.4) {
+                    scrollDistanceX = scrollDistanceX + distanceX;
+                    scrollDistanceY = scrollDistanceY + distanceY;
+                }
+                return true;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                return false;
+            }
+        });
     }
 
     public void initPaint(){
@@ -115,6 +186,10 @@ public class AttributeChart extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        //处理缩放事件，对画布进行缩放
+        canvas.scale(scaleValue,scaleValue,focusX,focusY);
+        //处理平移事件，对画布进行平移
+        canvas.translate(-scrollDistanceX,-scrollDistanceY);
         //没有数据时进行文字提示-暂无数据
         if(mData == null || mData.size() == 0){
             Rect rect = new Rect(0,getMeasuredHeight()/2, getMeasuredWidth(), getMeasuredHeight()/2 + 100);
@@ -179,6 +254,17 @@ public class AttributeChart extends View{
         canvas.drawPath(chartPath,mTextPaint);
         mCoverPaint.setStyle(Paint.Style.FILL);
         canvas.drawPath(chartPath,mCoverPaint);
+    }
 
+    /**
+     * 在ontouEvent中托管MotionEvent给手势监听器
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mScaleGestureDetector.onTouchEvent(event);
+        mGesturDetector.onTouchEvent(event);
+        return true;
     }
 }
