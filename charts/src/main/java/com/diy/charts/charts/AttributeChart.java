@@ -78,7 +78,7 @@ public class AttributeChart extends View{
         mCoverPaint = new Paint();
         mCoverPaint.setColor(mCoverColor);
         mCoverPaint.setAntiAlias(true);
-        mCoverPaint.setStrokeWidth(10);
+        mCoverPaint.setStrokeWidth(7);
         mCoverPaint.setStyle(Paint.Style.FILL);
 
         mChartPaint = new Paint();
@@ -144,9 +144,9 @@ public class AttributeChart extends View{
                 //判断，如果是最大的圆，获取固定点坐标画纵向线
                 if(i - LINE_WIDTH <= CHART_PADDING){
                     canvas.drawLine(getMeasuredWidth()/2, getMeasuredHeight()/2, pos1[0], pos1[1], mChartPaint);
-                    if(pos1[0] < getMeasuredWidth()/2){
-                        pos1[0] -= 80;
-                    }
+//                    if(pos1[0] < getMeasuredWidth()/2){
+//                        pos1[0] -= 80;
+//                    }
                     //写注记文字
                     canvas.drawText(mData.get(j).getName(), pos1[0],pos1[1], mTextPaint);
                 }
@@ -171,11 +171,14 @@ public class AttributeChart extends View{
             }else {
                 chartPath.lineTo(pos3[0], pos3[1]);
             }
-            mChartPaint.setColor(Color.parseColor("#ffffff"));
             canvas.drawCircle(pos3[0], pos3[1],10,mChartPaint);
         }
         chartPath.close();
         chartPath.setFillType(Path.FillType.EVEN_ODD);
+        mTextPaint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(chartPath,mTextPaint);
+        mCoverPaint.setStyle(Paint.Style.FILL);
         canvas.drawPath(chartPath,mCoverPaint);
+
     }
 }

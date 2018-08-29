@@ -9,6 +9,7 @@ import com.diy.charts.charts.AttributeChart;
 import com.diy.charts.charts.beans.AttributeChartData;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     AttributeChart chart;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(i < 30) {
+            if(i < 20) {
                 i++;
             }
             data.remove(4);
@@ -57,14 +58,31 @@ public class MainActivity extends AppCompatActivity {
         data6.setName("E");
         data6.setValue(i);
         data.add(data6);
-        chart.setData(data);
 
         AttributeChartData data5 = new AttributeChartData();
         data5.setName("F");
         data5.setValue(11);
         data.add(data5);
 
+        AttributeChartData data7 = new AttributeChartData();
+        data7.setName("F");
+        data7.setValue(11);
+        data.add(data7);
 
+        for(int i = 0; i < 2; i++){
+            AttributeChartData data8 = new AttributeChartData();
+            data8.setName("F");
+            data8.setValue(4 + new Random().nextInt(10));
+            data.add(data8);
+        }
+
+        AttributeChartData data8 = new AttributeChartData();
+        data8.setName("F");
+        data8.setValue(11);
+        data.add(data8);
+        chart.setData(data);
         handler.sendMessage(new Message());
+
+
     }
 }
