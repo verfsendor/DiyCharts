@@ -1,83 +1,90 @@
 package com.diy.charts.diycharts;
 
-import android.os.Handler;
-import android.os.Message;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.diy.charts.charts.AttributeChart;
-import com.diy.charts.charts.beans.AttributeChartData;
+import com.diy.charts.beans.SlikLineChartBean;
+import com.diy.charts.beans.SlikLineChartPoint;
+import com.diy.charts.view.AttributeChart;
+import com.diy.charts.beans.AttributeChartData;
+import com.diy.charts.view.SlikLineChart;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    AttributeChart chart;
-    ArrayList<AttributeChartData> data = new ArrayList<>();
-    AttributeChartData data6 = new AttributeChartData();
-    int i = 2;
+    SlikLineChart chart;
+    AttributeChart chart2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        chart = (AttributeChart)findViewById(R.id.chart);
-        chart.setEnabled(true);
-        final AttributeChartData data1 = new AttributeChartData();
-        data1.setName("属Add");
-        data1.setValue(19);
-        data.add(data1);
-        AttributeChartData data2 = new AttributeChartData();
-        data2.setName("属Bdd");
-        data2.setValue(12);
-        data.add(data2);
-
-        AttributeChartData data3 = new AttributeChartData();
-        data3.setName("属Cg");
-        data3.setValue(16);
-        data.add(data3);
-
-        AttributeChartData data4 = new AttributeChartData();
-        data4.setName("属D");
-        data4.setValue(25);
-        data.add(data4);
-
-        data6.setName("属dsggE");
-        data6.setValue(i);
-        data.add(data6);
-
-        AttributeChartData data5 = new AttributeChartData();
-        data5.setName("属dggddgF");
-        data5.setValue(11);
-        data.add(data5);
-
-        AttributeChartData data7 = new AttributeChartData();
-        data7.setName("属dggG");
-        data7.setValue(11);
-        data.add(data7);
-
-        AttributeChartData data8 = new AttributeChartData();
-        data8.setName("属sggH");
-        data8.setValue(11);
-        data.add(data8);
-
-        for(int i = 0; i < 2; i ++) {
-            AttributeChartData data9 = new AttributeChartData();
-            data9.setName("属sssssH");
-            data9.setValue(11);
-            data.add(data9);
+        chart = (SlikLineChart)findViewById(R.id.chart);
+        ArrayList<SlikLineChartBean> beans =  new ArrayList<>();
+        Random random = new Random();
+        SlikLineChartBean bean1 =
+                new SlikLineChartBean()
+                .setLineColor(Color.parseColor("#9932CC"))
+                .setShowCircle(true)
+                .setCircleRadius(5)
+                .setName("语文")
+                .setShowNum(true);
+        ArrayList<SlikLineChartPoint> points = new ArrayList<>();
+        for(int i = 0; i < 30; i ++){
+            SlikLineChartPoint point = new SlikLineChartPoint();
+            point.setValue(random.nextInt(100));
+            points.add(point);
         }
-        chart.setData(data);
+        bean1.setData(points);
+        beans.add(bean1);
 
-        findViewById(R.id.textview).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AttributeChartData data9 = new AttributeChartData();
-                data9.setName("徐镇东aa");
-                data9.setValue(11);
-                data.add(data9);
-                chart.notifyDataChanged(data);
-            }
-        });
+        SlikLineChartBean bean2 =
+                new SlikLineChartBean()
+                        .setLineColor(Color.parseColor("#7CFC00"))
+                        .setShowCircle(true)
+                        .setCircleRadius(5)
+                        .setName("数学")
+                        .setShowNum(true);
+        ArrayList<SlikLineChartPoint> points2 = new ArrayList<>();
+        for(int i = 0; i < 30; i ++){
+            SlikLineChartPoint point = new SlikLineChartPoint();
+            point.setValue(random.nextInt(70));
+            points2.add(point);
+        }
+        bean1.setData(points2);
+        beans.add(bean2);
+
+        SlikLineChartBean bean3 =
+                new SlikLineChartBean()
+                        .setLineColor(Color.parseColor("#8B1A1A"))
+                        .setShowCircle(true)
+                        .setCircleRadius(5)
+                        .setName("英语")
+                        .setShowNum(true);
+        ArrayList<SlikLineChartPoint> points3 = new ArrayList<>();
+        for(int i = 0; i < 30; i ++){
+            SlikLineChartPoint point = new SlikLineChartPoint();
+            point.setValue(random.nextInt(70));
+            points3.add(point);
+        }
+        bean1.setData(points3);
+        beans.add(bean3);
+        chart.setData(beans);
     }
+
+    public void initChart2(){
+        chart2 = (AttributeChart)findViewById(R.id.chart2);
+        ArrayList<AttributeChartData> data = new ArrayList<>();
+        for (int i = 0; i < 5; i ++){
+            AttributeChartData data1 = new AttributeChartData();
+            data1.setValue(new Random().nextInt(20));
+            data1.setName("属性" + (i+1));
+            data.add(data1);
+        }
+        chart2.setData(data);
+    }
+
 }

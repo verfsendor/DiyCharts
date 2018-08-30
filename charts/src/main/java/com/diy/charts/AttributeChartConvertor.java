@@ -1,4 +1,4 @@
-package com.diy.charts.charts;
+package com.diy.charts;
 
 /**
  * Created by xuzhendong on 2018/8/28.

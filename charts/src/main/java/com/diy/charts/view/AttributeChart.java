@@ -1,4 +1,4 @@
-package com.diy.charts.charts;
+package com.diy.charts.view;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -18,7 +18,9 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.SurfaceView;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import com.diy.charts.charts.beans.AttributeChartData;
+
+import com.diy.charts.beans.AttributeChartData;
+
 import java.util.ArrayList;
 
 /**
@@ -105,13 +107,13 @@ public class AttributeChart extends SurfaceView{
 
     private void getAttrs(AttributeSet attrs){
         if(attrs != null){
-            TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.AttributeChart);
+            TypedArray typedArray = mContext.obtainStyledAttributes(attrs, com.diy.charts.charts.R.styleable.AttributeChart);
 //            progressStrokeWidth = typedArray.getDimensionPixelOffset(R.styleable.CircleProgressBarView_progressStrokeWidth, defaultStrokeWidth);
-            mTextColor = typedArray.getColor(R.styleable.AttributeChart_Attribute_TextColor, mTextColor);
-            mChartColor = typedArray.getColor(R.styleable.AttributeChart_Attribute_ChartColor, mChartColor);
-            mCoverColor = typedArray.getColor(R.styleable.AttributeChart_Attribute_CoverColor, mCoverColor);
-            mLineColor = typedArray.getColor(R.styleable.AttributeChart_Attribute_LineColor, mLineColor);
-            showAnim = typedArray.getBoolean(R.styleable.AttributeChart_Attribute_showAnim, true);
+            mTextColor = typedArray.getColor(com.diy.charts.charts.R.styleable.AttributeChart_Attribute_TextColor, mTextColor);
+            mChartColor = typedArray.getColor(com.diy.charts.charts.R.styleable.AttributeChart_Attribute_ChartColor, mChartColor);
+            mCoverColor = typedArray.getColor(com.diy.charts.charts.R.styleable.AttributeChart_Attribute_CoverColor, mCoverColor);
+            mLineColor = typedArray.getColor(com.diy.charts.charts.R.styleable.AttributeChart_Attribute_LineColor, mLineColor);
+            showAnim = typedArray.getBoolean(com.diy.charts.charts.R.styleable.AttributeChart_Attribute_showAnim, true);
             typedArray.recycle();
         }
     }
@@ -127,6 +129,7 @@ public class AttributeChart extends SurfaceView{
                 focusX = detector.getFocusX();
                 focusY = detector.getFocusY();
                 scaleValue = scaleValue * detector.getScaleFactor();
+                Log.v("aaaa","getScaleFactor " + detector.getScaleFactor() + " " + scaleValue);
                 //设置最大缩放比例
                 if(scaleValue > 3){
                     scaleValue =3;
@@ -246,11 +249,6 @@ public class AttributeChart extends SurfaceView{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         /**
-         * 处理缩放和平移操作，根据手势监听器的值对画布进行缩放和平移
-         */
-        canvas.scale(scaleValue,scaleValue,focusX,focusY);
-        canvas.translate(-scrollDistanceX,-scrollDistanceY);
-        /**
          * 没有数据时进行文字提示"暂无数据"
          */
         if(mData == null || mData.size() == 0){
@@ -261,6 +259,12 @@ public class AttributeChart extends SurfaceView{
             canvas.drawText("暂无数据",rect.centerX(),baseline, mTextPaint);
             return;
         }
+        /**
+         * 处理缩放和平移操作，根据手势监听器的值对画布进行缩放和平移
+         */
+        canvas.scale(scaleValue,scaleValue,focusX,focusY);
+        canvas.translate(-scrollDistanceX,-scrollDistanceY);
+
         //表盘部分录制到picture上，在下次绘制时直接复用
         if(rePicture){
             recordPicture();

@@ -3,20 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:id="@+id/textview"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:background="#456789"
-        android:text="djgksjgksjgk"/>
-    <com.diy.charts.charts.AttributeChart
+
+    <com.diy.charts.view.SlikLineChart
         android:id="@+id/chart"
         android:layout_width="400dp"
         android:layout_height="400dp"
-        android:background="#6495ED"
-        app:Attribute_ChartColor="#ffffff"
-        app:Attribute_LineColor="#CD2626"
-        app:Attribute_CoverColor="#80BCD2EE"
-        android:layout_centerInParent="true"/>
+        android:background="#6495ED" />
+
+    <com.diy.charts.view.AttributeChart
+        android:id="@+id/chart2"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="#6495ED"/>
+
 </RelativeLayout>

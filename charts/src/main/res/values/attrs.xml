@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="AttributeChart">
-        <attr name="Attribute_bgColor" format="color"/>
         <attr name="Attribute_TextColor" format="color"/>
         <attr name="Attribute_ChartColor" format="color"/>
         <attr name="Attribute_CoverColor" format="color"/>
         <attr name="Attribute_LineColor" format="color"/>
         <attr name="Attribute_showAnim" format="boolean"/>
     </declare-styleable>
-
+    <declare-styleable name="SlikLineChart">
+        <attr name="SlikLineChart_TextColor" format="color"/>
+        <attr name="SlikLineChart_ChartColor" format="color"/>
+    </declare-styleable>
 
 </resources>
