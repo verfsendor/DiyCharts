@@ -7,14 +7,13 @@
     <com.diy.charts.view.SlikLineChart
         android:id="@+id/chart"
         android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:background="#6495ED" />
+        android:layout_height="400dp" />
 
     <com.diy.charts.view.AttributeChart
         android:id="@+id/chart2"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="500dp"
+        android:visibility="gone"
         android:background="#6495ED"/>
 
 </RelativeLayout>

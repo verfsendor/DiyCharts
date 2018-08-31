@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<SlikLineChartPoint> points = new ArrayList<>();
         for(int i = 0; i < 30; i ++){
             SlikLineChartPoint point = new SlikLineChartPoint();
-            point.setValue(random.nextInt(100));
+            point.setValue(5 + random.nextInt(10));
             points.add(point);
         }
         bean1.setData(points);
@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<SlikLineChartPoint> points2 = new ArrayList<>();
         for(int i = 0; i < 30; i ++){
             SlikLineChartPoint point = new SlikLineChartPoint();
-            point.setValue(random.nextInt(70));
+            point.setValue(12 + random.nextInt(10));
             points2.add(point);
         }
-        bean1.setData(points2);
+        bean2.setData(points2);
         beans.add(bean2);
 
         SlikLineChartBean bean3 =
@@ -67,12 +67,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<SlikLineChartPoint> points3 = new ArrayList<>();
         for(int i = 0; i < 30; i ++){
             SlikLineChartPoint point = new SlikLineChartPoint();
-            point.setValue(random.nextInt(70));
+            point.setValue(7 + random.nextInt(20));
             points3.add(point);
         }
-        bean1.setData(points3);
+        bean3.setData(points3);
         beans.add(bean3);
         chart.setData(beans);
+        initChart2();
     }
 
     public void initChart2(){
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<AttributeChartData> data = new ArrayList<>();
         for (int i = 0; i < 5; i ++){
             AttributeChartData data1 = new AttributeChartData();
-            data1.setValue(new Random().nextInt(20));
+            data1.setValue(i + 10);
             data1.setName("属性" + (i+1));
             data.add(data1);
         }

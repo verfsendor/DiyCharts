@@ -19,7 +19,7 @@ public class SlikLineChartBean implements Serializable{
     public SlikLineChartBean(){
         data = new ArrayList<>();
         linecolor = Color.parseColor("#333333");
-        circlecolor = linecolor;
+        circlecolor = Color.parseColor("#ffffff");
     }
 
     public SlikLineChartBean setData(ArrayList<SlikLineChartPoint> points){
@@ -29,7 +29,6 @@ public class SlikLineChartBean implements Serializable{
 
     public SlikLineChartBean setLineColor(int color){
         this.linecolor = color;
-        this.circlecolor = color;
         return this;
     }
 

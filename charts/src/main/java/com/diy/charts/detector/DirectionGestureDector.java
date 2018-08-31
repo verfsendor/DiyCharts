@@ -132,7 +132,7 @@ public class DirectionGestureDector {
                 finger2.add(event);
             }
         }
-        if(num % 10 != 0){
+        if(num % 1 != 0){
             return;
         }
         if(finger1.size() == 2 && finger2.size() == 2){
@@ -181,25 +181,26 @@ public class DirectionGestureDector {
             /**
              *  如果两个都是水平方向，则认定是水平缩放,否则为竖直缩放，并根据距离变化判断缩放种类和缩放比例
              */
-            if(driectionXHorintal1 && driectionXHorintal2){
+//            if(driectionXHorintal1 && driectionXHorintal2){
                 float distance1 = Math.abs(finger1.get(0).getX() - finger2.get(0).getX());
                 float distance2 = Math.abs(finger1.get(1).getX() - finger2.get(1).getX());
                 if(distance2 > distance1) {
-                    scaleX = 1 + (Math.abs(finger1x) + Math.abs(finger2x)) / 2000;
+                    scaleX = 1 + (Math.abs(finger1x) + Math.abs(finger2x)) / 3000;
                 }else {
-                    scaleX = 1 - (Math.abs(finger1x) + Math.abs(finger2x)) / 2000;
+                    scaleX = 1 - (Math.abs(finger1x) + Math.abs(finger2x)) / 3000;
                 }
-                scaleY = 1;
-            }else {
-                float distance1 = Math.abs(finger1.get(0).getY() - finger2.get(0).getY());
-                float distance2 = Math.abs(finger1.get(1).getY() - finger2.get(1).getY());
-                if(distance2 > distance1) {
-                    scaleY = 1 + (Math.abs(finger1x) + Math.abs(finger2x)) / 2000;
+//                scaleY = 1;
+//            }else {
+                float distance3 = Math.abs(finger1.get(0).getY() - finger2.get(0).getY());
+                float distance4 = Math.abs(finger1.get(1).getY() - finger2.get(1).getY());
+                if(distance3 > distance4) {
+                    scaleY = 1 + (Math.abs(finger1x) + Math.abs(finger2x)) / 3000;
                 }else {
-                    scaleY = 1 - (Math.abs(finger1x) + Math.abs(finger2x)) / 2000;
+                    scaleY = 1 - (Math.abs(finger1x) + Math.abs(finger2x)) / 3000;
                 }
-                scaleX = 1;
-            }
+//                scaleX = 1;
+//            }
+
             Log.v("aaaa"," 最后结果 scaleX = " + scaleX  + " scaleY = " + scaleY);
             GestureData data = new GestureData(scaleX, scaleY, fousX, fousY);
             listenr.onScale(data);
