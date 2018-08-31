@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by xuzhendong on 2018/8/30.
  */
 
-public class BaseData implements Serializable {
+public class BaseEntry implements Serializable {
     private float value;
 
     public float getValue() {

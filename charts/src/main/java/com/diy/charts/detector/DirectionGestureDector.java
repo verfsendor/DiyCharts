@@ -1,8 +1,5 @@
 package com.diy.charts.detector;
-
-import android.util.Log;
 import android.view.MotionEvent;
-
 import java.util.ArrayList;
 
 /**
@@ -60,37 +57,7 @@ public class DirectionGestureDector {
         }
         return true;
     }
-    public float getScaleX() {
-        return scaleX;
-    }
 
-    public void setScaleX(float scaleX) {
-        this.scaleX = scaleX;
-    }
-
-    public float getScaleY() {
-        return scaleY;
-    }
-
-    public void setScaleY(float scaleY) {
-        this.scaleY = scaleY;
-    }
-
-    public float getFousX() {
-        return fousX;
-    }
-
-    public void setFousX(float fousX) {
-        this.fousX = fousX;
-    }
-
-    public float getFousY() {
-        return fousY;
-    }
-
-    public void setFousY(float fousY) {
-        this.fousY = fousY;
-    }
 
     public void analysisMontionEvent(PointerMotionEvent event){
         if(event.getAction() == MotionEvent.ACTION_UP){
@@ -148,22 +115,6 @@ public class DirectionGestureDector {
 
             float finger2x = finger2.get(1).getX() - finger2.get(0).getX();
             float finger2y = finger2.get(1).getY() - finger2.get(0).getY();
-            Log.v("aaaa"," finger1 start x " + finger1.get(0).getX());
-            Log.v("aaaa"," finger1 start y " + finger1.get(0).getY());
-            Log.v("aaaa"," finger1   end x " + finger1.get(1).getX());
-            Log.v("aaaa"," finger1   end y " + finger1.get(1).getY());
-
-            Log.v("aaaa"," finger2 start x " + finger2.get(0).getX());
-            Log.v("aaaa"," finger2 start y " + finger2.get(0).getY());
-            Log.v("aaaa"," finger2   end x " + finger2.get(1).getX());
-            Log.v("aaaa"," finger2   end y " + finger2.get(1).getY());
-
-            Log.v("aaaa"," finger1   x的差 " + finger1x);
-            Log.v("aaaa"," finger1   y的差 " + finger1y);
-            Log.v("aaaa"," finger2   x的差 " + finger2x);
-            Log.v("aaaa"," finger2   y的差 " + finger2y);
-
-
             /**
              * 判断两个手指，如果两个坐标的做差后异号，即方向相反，此时可以认定手势做的是缩放手势，再进行下一步处理
              */
@@ -176,12 +127,10 @@ public class DirectionGestureDector {
             if(Math.abs(finger2x) > Math.abs(finger2y)){
                 driectionXHorintal2 = true;
             }
-            Log.v("aaaa"," finger1水平 " + driectionXHorintal1);
-            Log.v("aaaa"," finger2水平 " + driectionXHorintal2);
             /**
              *  如果两个都是水平方向，则认定是水平缩放,否则为竖直缩放，并根据距离变化判断缩放种类和缩放比例
              */
-//            if(driectionXHorintal1 && driectionXHorintal2){
+            if(driectionXHorintal1 && driectionXHorintal2){
                 float distance1 = Math.abs(finger1.get(0).getX() - finger2.get(0).getX());
                 float distance2 = Math.abs(finger1.get(1).getX() - finger2.get(1).getX());
                 if(distance2 > distance1) {
@@ -189,8 +138,8 @@ public class DirectionGestureDector {
                 }else {
                     scaleX = 1 - (Math.abs(finger1x) + Math.abs(finger2x)) / 3000;
                 }
-//                scaleY = 1;
-//            }else {
+                scaleY = 1;
+            }else {
                 float distance3 = Math.abs(finger1.get(0).getY() - finger2.get(0).getY());
                 float distance4 = Math.abs(finger1.get(1).getY() - finger2.get(1).getY());
                 if(distance3 > distance4) {
@@ -198,13 +147,42 @@ public class DirectionGestureDector {
                 }else {
                     scaleY = 1 - (Math.abs(finger1x) + Math.abs(finger2x)) / 3000;
                 }
-//                scaleX = 1;
-//            }
-
-            Log.v("aaaa"," 最后结果 scaleX = " + scaleX  + " scaleY = " + scaleY);
+                scaleX = 1;
+            }
             GestureData data = new GestureData(scaleX, scaleY, fousX, fousY);
             listenr.onScale(data);
         }
     }
 
+    public float getScaleX() {
+        return scaleX;
+    }
+
+    public void setScaleX(float scaleX) {
+        this.scaleX = scaleX;
+    }
+
+    public float getScaleY() {
+        return scaleY;
+    }
+
+    public void setScaleY(float scaleY) {
+        this.scaleY = scaleY;
+    }
+
+    public float getFousX() {
+        return fousX;
+    }
+
+    public void setFousX(float fousX) {
+        this.fousX = fousX;
+    }
+
+    public float getFousY() {
+        return fousY;
+    }
+
+    public void setFousY(float fousY) {
+        this.fousY = fousY;
+    }
 }

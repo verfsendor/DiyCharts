@@ -35,27 +35,28 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<SlikLineChartPoint> points = new ArrayList<>();
         for(int i = 0; i < 30; i ++){
             SlikLineChartPoint point = new SlikLineChartPoint();
-            point.setValue(5 + random.nextInt(10));
+            point.setValue(0.582f);
             points.add(point);
         }
         bean1.setData(points);
-        beans.add(bean1);
+//        beans.add(bean1);
 
         SlikLineChartBean bean2 =
                 new SlikLineChartBean()
                         .setLineColor(Color.parseColor("#7CFC00"))
                         .setShowCircle(true)
                         .setCircleRadius(5)
+                        .setNumTextsize(20)
                         .setName("数学")
                         .setShowNum(true);
         ArrayList<SlikLineChartPoint> points2 = new ArrayList<>();
         for(int i = 0; i < 30; i ++){
             SlikLineChartPoint point = new SlikLineChartPoint();
-            point.setValue(12 + random.nextInt(10));
+            point.setValue(0.9f);
             points2.add(point);
         }
         bean2.setData(points2);
-        beans.add(bean2);
+//        beans.add(bean2);
 
         SlikLineChartBean bean3 =
                 new SlikLineChartBean()
@@ -65,11 +66,31 @@ public class MainActivity extends AppCompatActivity {
                         .setName("英语")
                         .setShowNum(true);
         ArrayList<SlikLineChartPoint> points3 = new ArrayList<>();
-        for(int i = 0; i < 30; i ++){
-            SlikLineChartPoint point = new SlikLineChartPoint();
-            point.setValue(7 + random.nextInt(20));
-            points3.add(point);
-        }
+        SlikLineChartPoint a = new SlikLineChartPoint();
+        a.setValue(4);
+        points3.add(a);
+        SlikLineChartPoint b = new SlikLineChartPoint();
+        b.setValue(15);
+        points3.add(b);
+        SlikLineChartPoint c = new SlikLineChartPoint();
+        c.setValue(8);
+        points3.add(c);
+        SlikLineChartPoint d = new SlikLineChartPoint();
+        d.setValue(9);
+        points3.add(d);
+        SlikLineChartPoint e = new SlikLineChartPoint();
+        e.setValue(6);
+        points3.add(e);
+        SlikLineChartPoint f = new SlikLineChartPoint();
+        f.setValue(10);
+        points3.add(f);
+        SlikLineChartPoint g = new SlikLineChartPoint();
+        g.setValue(15);
+        points3.add(g);
+        SlikLineChartPoint h = new SlikLineChartPoint();
+        h.setValue(11);
+        points3.add(h);
+
         bean3.setData(points3);
         beans.add(bean3);
         chart.setData(beans);

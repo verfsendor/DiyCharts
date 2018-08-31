@@ -7,6 +7,5 @@ import android.view.ScaleGestureDetector;
  */
 
 public interface DirectionGestureDectorListenr {
-     //暂时废弃
      boolean onScale(GestureData detector);
 }
