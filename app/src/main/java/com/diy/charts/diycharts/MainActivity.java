@@ -1,18 +1,12 @@
 package com.diy.charts.diycharts;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.diy.charts.beans.SlikLineChartBean;
-import com.diy.charts.beans.SlikLineChartPoint;
 import com.diy.charts.view.AttributeChart;
-import com.diy.charts.beans.AttributeChartData;
 import com.diy.charts.view.SlikLineChart;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     SlikLineChart chart;
@@ -22,91 +16,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        chart = (SlikLineChart)findViewById(R.id.chart);
-        ArrayList<SlikLineChartBean> beans =  new ArrayList<>();
-        Random random = new Random();
-        SlikLineChartBean bean1 =
-                new SlikLineChartBean()
-                .setLineColor(Color.parseColor("#9932CC"))
-                .setShowCircle(true)
-                .setCircleRadius(5)
-                .setName("语文")
-                .setShowNum(true);
-        ArrayList<SlikLineChartPoint> points = new ArrayList<>();
-        for(int i = 0; i < 30; i ++){
-            SlikLineChartPoint point = new SlikLineChartPoint();
-            point.setValue(0.582f);
-            points.add(point);
-        }
-        bean1.setData(points);
-//        beans.add(bean1);
+        findViewById(R.id.a).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,AttributeChartActivity.class));
+            }
+        });
 
-        SlikLineChartBean bean2 =
-                new SlikLineChartBean()
-                        .setLineColor(Color.parseColor("#7CFC00"))
-                        .setShowCircle(true)
-                        .setCircleRadius(5)
-                        .setNumTextsize(20)
-                        .setName("数学")
-                        .setShowNum(true);
-        ArrayList<SlikLineChartPoint> points2 = new ArrayList<>();
-        for(int i = 0; i < 30; i ++){
-            SlikLineChartPoint point = new SlikLineChartPoint();
-            point.setValue(0.9f);
-            points2.add(point);
-        }
-        bean2.setData(points2);
-//        beans.add(bean2);
+        findViewById(R.id.b).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,SlikLineChartActivity.class));
+            }
+        });
 
-        SlikLineChartBean bean3 =
-                new SlikLineChartBean()
-                        .setLineColor(Color.parseColor("#8B1A1A"))
-                        .setShowCircle(true)
-                        .setCircleRadius(5)
-                        .setName("英语")
-                        .setShowNum(true);
-        ArrayList<SlikLineChartPoint> points3 = new ArrayList<>();
-        SlikLineChartPoint a = new SlikLineChartPoint();
-        a.setValue(4);
-        points3.add(a);
-        SlikLineChartPoint b = new SlikLineChartPoint();
-        b.setValue(15);
-        points3.add(b);
-        SlikLineChartPoint c = new SlikLineChartPoint();
-        c.setValue(8);
-        points3.add(c);
-        SlikLineChartPoint d = new SlikLineChartPoint();
-        d.setValue(9);
-        points3.add(d);
-        SlikLineChartPoint e = new SlikLineChartPoint();
-        e.setValue(6);
-        points3.add(e);
-        SlikLineChartPoint f = new SlikLineChartPoint();
-        f.setValue(10);
-        points3.add(f);
-        SlikLineChartPoint g = new SlikLineChartPoint();
-        g.setValue(15);
-        points3.add(g);
-        SlikLineChartPoint h = new SlikLineChartPoint();
-        h.setValue(11);
-        points3.add(h);
-
-        bean3.setData(points3);
-        beans.add(bean3);
-        chart.setData(beans);
-        initChart2();
+        findViewById(R.id.c).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,PieChartActivity.class));
+            }
+        });
     }
 
-    public void initChart2(){
-        chart2 = (AttributeChart)findViewById(R.id.chart2);
-        ArrayList<AttributeChartData> data = new ArrayList<>();
-        for (int i = 0; i < 5; i ++){
-            AttributeChartData data1 = new AttributeChartData();
-            data1.setValue(i + 10);
-            data1.setName("属性" + (i+1));
-            data.add(data1);
-        }
-        chart2.setData(data);
-    }
 
 }

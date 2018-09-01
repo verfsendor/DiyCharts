@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.diy.charts.view.SlikLineChart
-        android:id="@+id/chart"
-        android:layout_width="400dp"
-        android:layout_height="400dp" />
-
-    <com.diy.charts.view.AttributeChart
-        android:id="@+id/chart2"
+    <Button
+        android:id="@+id/a"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:visibility="gone"
-        android:background="#6495ED"/>
+        android:layout_height="50dp"
+        android:text="a"/>
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/b"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="b"/>
+
+    <Button
+        android:id="@+id/c"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="c"/>
+
+</LinearLayout>

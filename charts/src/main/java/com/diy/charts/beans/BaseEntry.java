@@ -8,12 +8,43 @@ import java.io.Serializable;
 
 public class BaseEntry implements Serializable {
     private float value;
+    private String name;
+    private float x;
+    private float y;
 
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setXY(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
     public float getValue() {
         return value;
     }
 
     public void setValue(float value) {
         this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

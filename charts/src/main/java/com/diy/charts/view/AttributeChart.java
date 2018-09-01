@@ -19,7 +19,7 @@ import android.view.ScaleGestureDetector;
 import android.view.SurfaceView;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.diy.charts.beans.AttributeChartData;
+import com.diy.charts.beans.AttributeChartBean;
 
 import java.util.ArrayList;
 
@@ -86,7 +86,7 @@ public class AttributeChart extends SurfaceView{
     private float animationValue;
     private boolean showAnim;
     private boolean rePicture = true;//判断是否需要重新绘制表盘
-    private ArrayList<AttributeChartData> mData;
+    private ArrayList<AttributeChartBean> mData;
     public AttributeChart(Context context) {
         super(context);
         this.mContext = context;
@@ -219,7 +219,7 @@ public class AttributeChart extends SurfaceView{
     }
 
 
-    public void setData(ArrayList<AttributeChartData> data){
+    public void setData(ArrayList<AttributeChartBean> data){
         this.mData = data;
         rePicture = true;
         if(showAnim) {
@@ -233,7 +233,7 @@ public class AttributeChart extends SurfaceView{
      * 更新数据
      * @param data
      */
-    public void notifyDataChanged(ArrayList<AttributeChartData> data){
+    public void notifyDataChanged(ArrayList<AttributeChartBean> data){
         this.mData = data;
         rePicture = true;
         invalidate();
