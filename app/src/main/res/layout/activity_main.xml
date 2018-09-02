@@ -9,18 +9,36 @@
         android:id="@+id/a"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="a"/>
+        android:text="雷达图"/>
 
     <Button
         android:id="@+id/b"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="b"/>
+        android:text="折线图"/>
 
     <Button
         android:id="@+id/c"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="c"/>
+        android:text="环状图"/>
+
+    <Button
+        android:id="@+id/d"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="条形图"/>
+
+    <Button
+        android:id="@+id/e"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="多项条形图"/>
+
+    <Button
+        android:id="@+id/f"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="堆积条形图"/>
 
 </LinearLayout>

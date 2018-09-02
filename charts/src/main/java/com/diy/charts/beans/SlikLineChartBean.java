@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class SlikLineChartBean implements Serializable{
     private String name;
-    private ArrayList<SlikLineChartPoint> data;
+    private ArrayList<SlikLineChartPoint> data;//存储
     private int linecolor;
     private int circlecolor;//数据圆点颜色
     private int circleRadius = 5;//数据圆点半径

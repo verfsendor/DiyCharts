@@ -17,4 +17,9 @@
         <attr name="PieChart_ChartColor" format="color"/>
     </declare-styleable>
 
+    <declare-styleable name="BarChart">
+        <attr name="BarChart_TextColor" format="color"/>
+        <attr name="BarChart_ChartColor" format="color"/>
+    </declare-styleable>
+
 </resources>

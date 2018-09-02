@@ -19,6 +19,10 @@
         <activity android:name=".AttributeChartActivity"/>
         <activity android:name=".SlikLineChartActivity"/>
         <activity android:name=".PieChartActivity"/>
+        <activity android:name=".BarChartActivity"/>
+        <activity android:name=".MutiBarChartActivity"/>
+        <activity android:name=".StackBarChartActivity"/>
+
     </application>
 
 </manifest>

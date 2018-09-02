@@ -6,19 +6,11 @@ import java.text.DecimalFormat;
  * Created by xuzhendong on 2018/8/31.
  */
 
-public class PiechartBean extends BaseEntry {
+public class PiechartBean extends SimpleEntry {
    private float percent;
-   private int color;
    private float startAngel;
    private float sweepAngel;
 
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
 
     public float getPercent() {
         return percent;
