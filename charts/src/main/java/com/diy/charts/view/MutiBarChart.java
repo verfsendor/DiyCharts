@@ -2,10 +2,8 @@ package com.diy.charts.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.media.MediaDataSource;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.diy.charts.beans.MutiBarChartBean;
 import com.diy.charts.beans.MutiBean;

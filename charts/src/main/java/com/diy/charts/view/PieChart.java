@@ -5,11 +5,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
-import android.graphics.Picture;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
@@ -21,28 +19,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.diy.charts.adapter.SlikChartAdapter;
 import com.diy.charts.beans.PiechartBean;
 import com.diy.charts.beans.PointBean;
-import com.diy.charts.beans.SlikLineChartBean;
-import com.diy.charts.beans.SlikLineChartPoint;
 import com.diy.charts.charts.R;
-import com.diy.charts.formatter.AxisFormatter;
-import com.diy.charts.formatter.SlimChartAxisFormatter;
-import com.diy.charts.listener.DetorListener;
-import com.diy.charts.listener.OnSlikLineChartItemClickListener;
-import com.diy.charts.utils.GestureDetorManager;
-import com.diy.charts.utils.Util;
+import com.diy.charts.utils.ChartUtil;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
  * Created by xuzhendong on 2018/8/28.
  * 顺滑折线图
  */
-public class PieChart extends View{
+public class PieChart extends View {
     private Context mContext;
     private GestureDetector gestureDetector;
     private ArrayList<PiechartBean> mData;
@@ -121,7 +109,7 @@ public class PieChart extends View{
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 if(Math.abs(e.getX() - getMeasuredWidth()/2) <= circleRadius && Math.abs(e.getY() - getMeasuredHeight()/2) <= circleRadius){
-                    double degree = Util.getTanDegreeX(e.getX() - getMeasuredWidth()/2, e.getY() - getMeasuredHeight()/2);
+                    double degree = ChartUtil.getTanDegreeX(e.getX() - getMeasuredWidth()/2, e.getY() - getMeasuredHeight()/2);
                     for(int i = 0; i < mData.size(); i ++){
                         if(mData.get(i).getStartAngel() < degree && mData.get(i).getStartAngel() + mData.get(i).getSweepAngel() > degree){
                             clicki = i;
@@ -293,8 +281,8 @@ public class PieChart extends View{
                 pointBean = new PointBean(event.getX(),event.getY());
             }else {
                 //获取两次滑动的坐标点与中心点连线在 Y轴负方向上的夹角。做差后即为此次滑动后图形需要转动的角度
-                double degree1 = Util.getTanDegreeInverseY(event.getX() - getMeasuredWidth()/2, event.getY() - getMeasuredHeight()/2);
-                double degree2 = Util.getTanDegreeInverseY(pointBean.getX() - getMeasuredWidth()/2, pointBean.getY() - getMeasuredHeight()/2);
+                double degree1 = ChartUtil.getTanDegreeInverseY(event.getX() - getMeasuredWidth()/2, event.getY() - getMeasuredHeight()/2);
+                double degree2 = ChartUtil.getTanDegreeInverseY(pointBean.getX() - getMeasuredWidth()/2, pointBean.getY() - getMeasuredHeight()/2);
                 //Y轴负方向重合时，可能返回0，也可能返回360， 判断如果上个点在第三象限，那么应该从左滑向右，计做 360，反之计作0
                 if(pointBean.getY() > getMeasuredHeight()/2 && pointBean.getX() < getMeasuredWidth()/2  && degree2 == 0){
                     degree2 = 360;

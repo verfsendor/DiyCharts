@@ -1,18 +1,22 @@
 package com.diy.charts.beans;
+
 import android.graphics.Color;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
 /**
  * Created by xuzhendong on 2018/8/30.
  */
 
-public class SlikLineChartBean implements Serializable{
+public class SlikLineChartBean implements Serializable {
     private String name;
     private ArrayList<SlikLineChartPoint> data;//存储
     private int linecolor;
     private int circlecolor;//数据圆点颜色
     private int circleRadius = 5;//数据圆点半径
     private int numTextsize = 12;
+    private int decimalN = 1;
     private boolean showNum = false;//是否在线上显示数字
     private boolean showCircle = true;//是否展示数据圆点
     private boolean showSlik = true;//是否展示圆滑效果
@@ -29,6 +33,11 @@ public class SlikLineChartBean implements Serializable{
 
     public SlikLineChartBean setLineColor(int color){
         this.linecolor = color;
+        return this;
+    }
+
+    public SlikLineChartBean setDecimalN(int n){
+        this.decimalN = n;
         return this;
     }
 
@@ -109,5 +118,9 @@ public class SlikLineChartBean implements Serializable{
 
     public boolean isShowSlik() {
         return showSlik;
+    }
+
+    public int getDecimalN() {
+        return decimalN;
     }
 }

@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Picture;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
@@ -19,15 +17,11 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.diy.charts.beans.BarChartBean;
-import com.diy.charts.beans.PointBean;
-import com.diy.charts.beans.SlikLineChartBean;
-import com.diy.charts.beans.SlikLineChartPoint;
 import com.diy.charts.charts.R;
 import com.diy.charts.formatter.AxisFormatter;
 import com.diy.charts.formatter.SlimChartAxisFormatter;
 import com.diy.charts.listener.DetorListener;
 import com.diy.charts.listener.OnBarChartItemClickListener;
-import com.diy.charts.listener.OnSlikLineChartItemClickListener;
 import com.diy.charts.utils.GestureDetorManager;
 
 import java.math.BigDecimal;
@@ -37,7 +31,7 @@ import java.util.ArrayList;
  * Created by xuzhendong on 2018/8/28.
  * 顺滑折线图
  */
-public class BarChart extends View implements DetorListener{
+public class BarChart extends View implements DetorListener {
     private Context mContext;
     private AxisFormatter formatter;
     private GestureDetorManager gestureDetorManager;
@@ -147,6 +141,7 @@ public class BarChart extends View implements DetorListener{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.drawColor(mBgcolor);
         if(mData == null || mData.size() == 0){
             Rect rect = new Rect(0,getMeasuredHeight()/2, getMeasuredWidth(), getMeasuredHeight()/2 + 100);
             mTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -307,6 +302,9 @@ public class BarChart extends View implements DetorListener{
     }
 
     public void calPos(){
+        if(mData == null || mData.size() <= 0){
+            return;
+        }
         valueWidth = (getMeasuredWidth() - PADDING_LEFT - PADDING_LEFT)/ mData.size();
         valueHeight = (getMeasuredHeight() - PADDING_BOTTOM - PADDING_LEFT - zeroHeight)/(getMaxValue() * 1.1f);
         sourcex = PADDING_LEFT + gestureDetorManager.scrollDistanceX;

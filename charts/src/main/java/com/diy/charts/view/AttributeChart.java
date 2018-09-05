@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * 雷达图
  */
 
-public class AttributeChart extends SurfaceView{
+public class AttributeChart extends SurfaceView {
     private Context mContext;
     private TextPaint mTextPaint;//文字画笔
     private Paint mChartPaint;//表格画笔
@@ -379,7 +379,7 @@ public class AttributeChart extends SurfaceView{
          */
         for(int i = getMeasuredWidth()/2 - LINE_WIDTH; i > CHART_PADDING; i = i - LINE_WIDTH){
             Path path = new Path();
-            path.addCircle(getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2 - i,Path.Direction.CCW);
+            path.addCircle(getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2 - i, Path.Direction.CCW);
             Log.v("verf","name add path " + path);
             mPaths.add(path);
             PathMeasure measure = new PathMeasure(path, false);     // 创建 PathMeasure

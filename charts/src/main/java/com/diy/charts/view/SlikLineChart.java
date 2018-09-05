@@ -1,4 +1,5 @@
 package com.diy.charts.view;
+
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,15 +17,18 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+
 import com.diy.charts.adapter.SlikChartAdapter;
-import com.diy.charts.beans.SlikLineChartPoint;
-import com.diy.charts.formatter.AxisFormatter;
-import com.diy.charts.formatter.SlimChartAxisFormatter;
 import com.diy.charts.beans.PointBean;
 import com.diy.charts.beans.SlikLineChartBean;
+import com.diy.charts.beans.SlikLineChartPoint;
+import com.diy.charts.charts.R;
+import com.diy.charts.formatter.AxisFormatter;
+import com.diy.charts.formatter.SlimChartAxisFormatter;
 import com.diy.charts.listener.DetorListener;
 import com.diy.charts.listener.OnSlikLineChartItemClickListener;
 import com.diy.charts.utils.GestureDetorManager;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -32,13 +36,12 @@ import java.util.ArrayList;
  * Created by xuzhendong on 2018/8/28.
  * 顺滑折线图
  */
-public class SlikLineChart extends View implements DetorListener{
+public class SlikLineChart extends View implements DetorListener {
     private Context mContext;
     private AxisFormatter formatter;
     private GestureDetorManager gestureDetorManager;
     private SlikChartAdapter slikChartAdapter;
     private OnSlikLineChartItemClickListener chartItemClickListener;
-
     private TextPaint mTextPaint;//文字画笔
     private Paint mChartPaint;//表格画笔
     private Paint defaultPaint;//多用画图
@@ -56,13 +59,13 @@ public class SlikLineChart extends View implements DetorListener{
      * 水平留白距离和底部留白距离
      */
     private int PADDING_LEFT = 50;
-    private int PADDING_BOTTOM = 200;
+    private int paddingBottom = 120;
 
     float valueWidth ;//每个单位长度的宽度
     float valueHeight ;//每个单位长度的高度
     float sourcex;//当前坐标原点
     float sourcey;//当前坐标原点
-    float axisWidth = 50;//坐标值标记文字之间的最小距离
+    float axisWidth = 100;//坐标值标记文字之间的最小距离
     float axisHeight = 100;//坐标值标记文字之间的最小距离
     float zeroHeight = 100; //纵坐标0的位置偏移量
     float animationValue = 1f;
@@ -90,9 +93,10 @@ public class SlikLineChart extends View implements DetorListener{
 
     private void getAttrs(AttributeSet attrs){
         if(attrs != null){
-            TypedArray typedArray = mContext.obtainStyledAttributes(attrs, com.diy.charts.charts.R.styleable.AttributeChart);
-            mTextColor = typedArray.getColor(com.diy.charts.charts.R.styleable.AttributeChart_Attribute_TextColor, mTextColor);
-            mChartColor = typedArray.getColor(com.diy.charts.charts.R.styleable.AttributeChart_Attribute_ChartColor, mChartColor);
+            TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.SlikLineChart);
+            mTextColor = typedArray.getColor(R.styleable.SlikLineChart_SlikLineChart_TextColor, mTextColor);
+            mChartColor = typedArray.getColor(R.styleable.SlikLineChart_SlikLineChart_ChartColor, mChartColor);
+            paddingBottom = typedArray.getColor(R.styleable.SlikLineChart_SlikLineChart_ChartColor, paddingBottom);
             typedArray.recycle();
         }
     }
@@ -145,6 +149,7 @@ public class SlikLineChart extends View implements DetorListener{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.drawColor(mBgcolor);
         if(slikChartAdapter.isEmpty()){
             Rect rect = new Rect(0,getMeasuredHeight()/2, getMeasuredWidth(), getMeasuredHeight()/2 + 100);
             mTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -157,17 +162,14 @@ public class SlikLineChart extends View implements DetorListener{
             recordPicture();
             canvas.drawPicture(picture);
         }else {
-            Log.v("verf","slikLineChartPoint 1");
             canvas.drawPicture(picture);
             if(slikLineChartPoint != null){
-                Log.v("verf","slikLineChartPoint 2");
                 canvas.drawLine(slikLineChartPoint.getX(), PADDING_LEFT, slikLineChartPoint.getX(), slikLineChartPoint.getY() - slikChartAdapter.mData.get(clickPosition1).getCircleRadius(), clickPaint);
-                canvas.drawLine(slikLineChartPoint.getX(), slikLineChartPoint.getY() + slikChartAdapter.mData.get(clickPosition1).getCircleRadius(),slikLineChartPoint.getX(), getMeasuredHeight() - PADDING_BOTTOM, clickPaint);
+                canvas.drawLine(slikLineChartPoint.getX(), slikLineChartPoint.getY() + slikChartAdapter.mData.get(clickPosition1).getCircleRadius(),slikLineChartPoint.getX(), getMeasuredHeight() - paddingBottom, clickPaint);
                 canvas.drawLine(PADDING_LEFT, slikLineChartPoint.getY(), slikLineChartPoint.getX() - slikChartAdapter.mData.get(clickPosition1).getCircleRadius(),slikLineChartPoint.getY(),clickPaint);
                 canvas.drawLine(slikLineChartPoint.getX()  + slikChartAdapter.mData.get(clickPosition1).getCircleRadius(),slikLineChartPoint.getY(),getMeasuredWidth() - PADDING_LEFT,slikLineChartPoint.getY(),clickPaint);
 
             }
-            Log.v("verf","slikLineChartPoint 3");
             rePicture = true;
         }
 
@@ -175,6 +177,7 @@ public class SlikLineChart extends View implements DetorListener{
 
     public void setData(ArrayList<SlikLineChartBean> data){
         slikChartAdapter.setData(data);
+        Log.v("verf","data size " + data.size());
         calPos();
         showStartAnimation();
     }
@@ -200,19 +203,14 @@ public class SlikLineChart extends View implements DetorListener{
            Path path = new Path();
            path.moveTo(sourcex, sourcey);
            ArrayList<PointBean> points = new ArrayList<>();
-            float lastx = sourcex;
-            float lasty = sourcey;
            for(int j = 0; j < bean.getData().size(); j ++){
                float x = sourcex + valueWidth * (j + 1);
                float y =  animationValue * (sourcey - valueHeight * bean.getData().get(j).getValue());
-               float y0 = getMeasuredHeight() - PADDING_BOTTOM - zeroHeight; //0刻度的纵坐标
+               float y0 = getMeasuredHeight() - paddingBottom - zeroHeight; //0刻度的纵坐标
                y = y0 - animationValue * (valueHeight * bean.getData().get(j).getValue() - (sourcey - y0));
-               path.quadTo(lastx,lasty,(x + lastx)/2, (y + lasty)/2);
-               lastx = x;
-               lasty = y;
+               path.lineTo(x,y);
                bean.getData().get(j).setXY(x,y);
-               points.add(new PointBean(x,y,"" + bean.getData().get(j).getValue()));
-               defaultPaint.setTextSize(bean.getNumTextsize());
+               points.add(new PointBean(x,y,"" + (int)bean.getData().get(j).getValue()));
                defaultPaint.setColor(bean.getCirclecolor());
            }
            defaultPaint.setColor(bean.getLinecolor());
@@ -225,7 +223,16 @@ public class SlikLineChart extends View implements DetorListener{
                     defaultPaint.setStyle(Paint.Style.STROKE);
                     defaultPaint.setColor(bean.getCirclecolor());
                     defaultPaint.setStrokeWidth(2);
-                    canvas.drawText(points.get(k).getDesc() ,points.get(k).getX(),points.get(k).getY() - 15,mChartPaint);
+                    if(bean.isShowNum()) {
+                        defaultPaint.setTextSize(bean.getNumTextsize());
+                        float txtWidth = defaultPaint.measureText(points.get(k).getDesc());
+                        defaultPaint.setColor(Color.WHITE);
+                        defaultPaint.setStrokeWidth(5);
+                        defaultPaint.setAntiAlias(true);
+                        defaultPaint.setStyle(Paint.Style.FILL);
+                        canvas.drawText(points.get(k).getDesc(), points.get(k).getX() - txtWidth/2, points.get(k).getY() - 15, defaultPaint);
+                        defaultPaint.setTextSize(20);
+                    }
                     canvas.drawCircle(points.get(k).getX(),points.get(k).getY(),bean.getCircleRadius(),defaultPaint);
                     defaultPaint.setStrokeWidth(3);
                     defaultPaint.setColor(bean.getLinecolor());
@@ -238,33 +245,42 @@ public class SlikLineChart extends View implements DetorListener{
      * 画坐标轴刻度
      * @param canvas
      */
-    private void drawAxis(Canvas canvas){
+    private void drawAxis(Canvas canvas) {
         float valuey = 0;
-        for(float y = sourcey; y > PADDING_LEFT; y-=axisHeight){
-            if(y < getMeasuredHeight() - PADDING_BOTTOM){
+        for (float y = sourcey; y > PADDING_LEFT; y -= axisHeight) {
+            if (y < getMeasuredHeight() - paddingBottom) {
                 String txt = "";
-                valuey = (sourcey - y)/valueHeight;
-                if(axisHeight/valueHeight < 1) {
+                valuey = (sourcey - y) / valueHeight;
+                if (axisHeight / valueHeight < 1) {
                     BigDecimal b = new BigDecimal(valuey);
                     txt = "" + b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-                }else {
-                    txt = "" + (int)valuey;
+                } else {
+                    txt = "" + (int) valuey;
                 }
-                if(mChartPaint.measureText(txt) > PADDING_LEFT){
+                if (mChartPaint.measureText(txt) > PADDING_LEFT) {
                     PADDING_LEFT = 70;
                 }
-                mChartPaint.setStrokeWidth(1);
+                mChartPaint.setStrokeWidth(0.5f);
                 canvas.drawLine(PADDING_LEFT, y, getMeasuredWidth() - PADDING_LEFT, y, mChartPaint);
                 mChartPaint.setStrokeWidth(3);
-                canvas.drawText(txt,PADDING_LEFT - mChartPaint.measureText(txt) - 10, y,mChartPaint);
+                canvas.drawText(txt, PADDING_LEFT - mChartPaint.measureText(txt) - 10, y, mChartPaint);
             }
         }
         int valuex = 0;
-        for(float x = sourcex; x < getMeasuredWidth() - PADDING_LEFT; x+=valueWidth){
-            if(x > PADDING_LEFT){
-                valuex = (int) ((x - sourcex)/valueWidth);
-                canvas.drawLine(x, getMeasuredHeight() - PADDING_BOTTOM, x, getMeasuredHeight() - PADDING_BOTTOM - 10, mChartPaint);
-                canvas.drawText(getFormatter().getCoordinate(valuex),x, getMeasuredHeight() - PADDING_BOTTOM + mChartPaint.measureText("10"),mChartPaint);
+        for (float x = sourcex; x < getMeasuredWidth() - PADDING_LEFT; x += valueWidth) {
+            if (x > PADDING_LEFT) {
+                valuex = (int) ((x - sourcex) / valueWidth);
+                canvas.drawLine(x, getMeasuredHeight() - paddingBottom, x, getMeasuredHeight() - paddingBottom - 10, mChartPaint);
+                float txtWidth = mChartPaint.measureText(getFormatter().getCoordinate(valuex));
+                float txtHeight = mChartPaint.measureText("10");
+                if (valueWidth >= axisWidth) {
+                    canvas.drawText(getFormatter().getCoordinate(valuex), x - txtWidth / 2, getMeasuredHeight() - paddingBottom + txtHeight, mChartPaint);
+                } else {
+                    int n = (int) (axisWidth / valueWidth);
+                    if (valuex % n == 0) {
+                        canvas.drawText(getFormatter().getCoordinate(valuex), x - txtWidth / 2, getMeasuredHeight() - paddingBottom + txtHeight, mChartPaint);
+                    }
+                }
             }
         }
     }
@@ -278,13 +294,13 @@ public class SlikLineChart extends View implements DetorListener{
         defaultPaint.setColor(mBgcolor);
         defaultPaint.setStyle(Paint.Style.FILL);
         canvas.drawRect(0,0,PADDING_LEFT, getMeasuredHeight(),defaultPaint);
-        canvas.drawRect(0,getMeasuredHeight() - PADDING_BOTTOM,getMeasuredWidth(), getMeasuredHeight(),defaultPaint);
-        canvas.drawLine(PADDING_LEFT,PADDING_LEFT, PADDING_LEFT, getMeasuredHeight() - PADDING_BOTTOM, mChartPaint);
-        canvas.drawLine(PADDING_LEFT,getMeasuredHeight() - PADDING_BOTTOM,
-                getMeasuredWidth() - PADDING_LEFT, getMeasuredHeight() - PADDING_BOTTOM,mChartPaint);
+        canvas.drawRect(0,getMeasuredHeight() - paddingBottom,getMeasuredWidth(), getMeasuredHeight(),defaultPaint);
+        canvas.drawLine(PADDING_LEFT,PADDING_LEFT, PADDING_LEFT, getMeasuredHeight() - paddingBottom, mChartPaint);
+        canvas.drawLine(PADDING_LEFT,getMeasuredHeight() - paddingBottom,
+                getMeasuredWidth() - PADDING_LEFT, getMeasuredHeight() - paddingBottom,mChartPaint);
 
         float  startx = PADDING_LEFT;
-        float  starty = getMeasuredHeight() - PADDING_BOTTOM + 80;
+        float  starty = getMeasuredHeight() - paddingBottom + 50;
         float  txtHeight = mTextPaint.measureText("图");
         for(int i = 0; i < slikChartAdapter.mData.size(); i ++){
             if(slikChartAdapter.mData.get(i).getLinecolor() != 0) {
@@ -320,7 +336,7 @@ public class SlikLineChart extends View implements DetorListener{
 
     @Override
     public void onSingleTap(MotionEvent event) {
-        if(event.getY() < getMeasuredHeight() - PADDING_BOTTOM){
+        if(event.getY() < getMeasuredHeight() - paddingBottom){
             int value = (int) ((event.getX() - sourcex)/valueWidth);
             SlikLineChartPoint point = new SlikLineChartPoint();
             int clicki = 0;
@@ -364,17 +380,20 @@ public class SlikLineChart extends View implements DetorListener{
     }
 
     public void calPos(){
+        if(slikChartAdapter.mData == null || slikChartAdapter.mData.size() <= 0 || slikChartAdapter.getMaxDatasize() == 0){
+            return;
+        }
         valueWidth = (getMeasuredWidth() - PADDING_LEFT - PADDING_LEFT)/ slikChartAdapter.getMaxDatasize();
-        valueHeight = (getMeasuredHeight() - PADDING_BOTTOM - PADDING_LEFT - zeroHeight)/(slikChartAdapter.getMaxValue() * 1.1f);
+        valueHeight = (getMeasuredHeight() - paddingBottom - PADDING_LEFT - zeroHeight)/(slikChartAdapter.getMaxValue() * 1.1f);
         sourcex = PADDING_LEFT + gestureDetorManager.scrollDistanceX;
-        sourcey = getMeasuredHeight() - PADDING_BOTTOM - zeroHeight + gestureDetorManager.scrollDistanceY;
+        sourcey = getMeasuredHeight() - paddingBottom - zeroHeight + gestureDetorManager.scrollDistanceY;
         sourcex = sourcex + (1 - gestureDetorManager.scaleValueX) * (gestureDetorManager.focusX - sourcex);
         sourcey = sourcey - (1 - gestureDetorManager.scaleValueY) * (sourcey - gestureDetorManager.focusY);
         if(sourcex > PADDING_LEFT){
             sourcex = PADDING_LEFT;
         }
-        if(sourcey < getMeasuredHeight() - PADDING_BOTTOM - zeroHeight){
-            sourcey = getMeasuredHeight() - PADDING_BOTTOM- zeroHeight;
+        if(sourcey < getMeasuredHeight() - paddingBottom - zeroHeight){
+            sourcey = getMeasuredHeight() - paddingBottom - zeroHeight;
         }
         valueWidth = valueWidth * gestureDetorManager.scaleValueX;
         valueHeight = valueHeight * gestureDetorManager.scaleValueY;

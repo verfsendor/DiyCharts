@@ -1,4 +1,5 @@
 package com.diy.charts.view;
+
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+
 import com.diy.charts.beans.SimpleEntry;
 import com.diy.charts.charts.R;
 import com.diy.charts.formatter.AxisFormatter;
@@ -27,7 +29,7 @@ import java.util.ArrayList;
  * Created by xuzhendong on 2018/8/28.
  * 坐标轴基类
  */
-public abstract class BaseAxisChart<T extends SimpleEntry> extends View implements DetorListener{
+public abstract class BaseAxisChart<T extends SimpleEntry> extends View implements DetorListener {
     protected Context mContext;
     protected AxisFormatter formatter;
     protected GestureDetorManager gestureDetorManager;

@@ -6,5 +6,10 @@ package com.diy.charts.beans;
  */
 
 public class SlikLineChartPoint extends SimpleEntry {
+   public SlikLineChartPoint(float value){
+       setValue(value);
+   }
 
+    public SlikLineChartPoint(){
+    }
 }

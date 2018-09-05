@@ -4,9 +4,6 @@ import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.diy.charts.detector.DirectionGestureDector;
 import com.diy.charts.detector.DirectionGestureDectorListenr;

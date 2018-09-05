@@ -6,5 +6,5 @@ package com.diy.charts.formatter;
  */
 
 public interface AxisFormatter {
-    String getCoordinate (int value);
+    String getCoordinate(int value);
 }

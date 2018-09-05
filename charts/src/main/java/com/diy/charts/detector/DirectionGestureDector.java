@@ -1,5 +1,7 @@
 package com.diy.charts.detector;
+
 import android.view.MotionEvent;
+
 import java.util.ArrayList;
 
 /**
