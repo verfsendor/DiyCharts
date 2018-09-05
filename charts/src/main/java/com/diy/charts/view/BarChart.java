@@ -13,6 +13,7 @@ import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -25,6 +26,7 @@ import com.diy.charts.charts.R;
 import com.diy.charts.formatter.AxisFormatter;
 import com.diy.charts.formatter.SlimChartAxisFormatter;
 import com.diy.charts.listener.DetorListener;
+import com.diy.charts.listener.OnBarChartItemClickListener;
 import com.diy.charts.listener.OnSlikLineChartItemClickListener;
 import com.diy.charts.utils.GestureDetorManager;
 
@@ -40,13 +42,12 @@ public class BarChart extends View implements DetorListener{
     private AxisFormatter formatter;
     private GestureDetorManager gestureDetorManager;
     private ArrayList<BarChartBean> mData;
-
     private TextPaint mTextPaint;//文字画笔
     private Paint mChartPaint;//表格画笔
     private Paint defaultPaint;//多用画图
     private Paint clickPaint;//多用画图
     private boolean drawNum = true;
-
+    private OnBarChartItemClickListener listener;
     private boolean rePicture = true;//重新录制
     private Picture picture;
 
@@ -69,9 +70,7 @@ public class BarChart extends View implements DetorListener{
     float axisHeight = 100;//坐标值标记文字之间的最小距离
     float zeroHeight = 0; //纵坐标0的位置偏移量
     float animationValue = 1f;
-    private SlikLineChartPoint slikLineChartPoint;
-    private int clickPosition1;
-    private int clickPosition2;
+    private int clickPosition = -1;
 
     public BarChart(Context context) {
         super(context);
@@ -199,9 +198,12 @@ public class BarChart extends View implements DetorListener{
             float y =  animationValue * (sourcey - valueHeight * mData.get(i).getValue());
             float y0 = getMeasuredHeight() - PADDING_BOTTOM - zeroHeight; //0刻度的纵坐标
             y = y0 - animationValue * (valueHeight * mData.get(i).getValue() - (sourcey - y0));
+            mData.get(i).setXY(x,y);
+            if(i == clickPosition){
+                defaultPaint.setColor(Color.parseColor("#000000"));
+            }
             canvas.drawRect(x,y  + (1- animationValue)*(y0 - y),x + valueWidth, y0,defaultPaint);
-            mData.get(i).setX(x);
-            mData.get(i).setX(y);
+            defaultPaint.setAlpha(100);
             if(drawNum){
                 float txtwidth = mChartPaint.measureText("" + mData.get(i).getValue());
                 canvas.drawText("" + mData.get(i).getValue(), x + valueWidth/2 - txtwidth/2 , y  + (1- animationValue)*(y0 - y) - 15, mChartPaint);
@@ -244,7 +246,6 @@ public class BarChart extends View implements DetorListener{
         }
     }
 
-
     /**
      * 画坐标轴，图例和助记
      * @param canvas
@@ -259,8 +260,6 @@ public class BarChart extends View implements DetorListener{
                 getMeasuredWidth() - PADDING_LEFT, getMeasuredHeight() - PADDING_BOTTOM,mChartPaint);
 
     }
-
-
 
     public void setFormatter(AxisFormatter formatter){
         this.formatter = formatter;
@@ -282,6 +281,8 @@ public class BarChart extends View implements DetorListener{
 
     @Override
     public void onSingleTap(MotionEvent event) {
+        Log.v("verf","onSingleTap");
+        treatClickEvent(event);
     }
 
     /**
@@ -292,8 +293,13 @@ public class BarChart extends View implements DetorListener{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         gestureDetorManager.onTouchEvent(event);
+        if(gestureDetorManager.scaleValueX == 1){
+//            treatClickEvent(event);
+        }
         return true;
     }
+
+
 
     @Override
     protected void onDetachedFromWindow() {
@@ -335,8 +341,6 @@ public class BarChart extends View implements DetorListener{
         });
         valueAnimator.start();
     }
-
-
     /**
      * 将固定的表盘部分绘制在picture上进行复用
      */
@@ -358,5 +362,26 @@ public class BarChart extends View implements DetorListener{
             }
         }
         return result;
+    }
+
+    public void setOnBarChartItemClickListener(OnBarChartItemClickListener listener){
+        this.listener = listener;
+    }
+
+    //处理点击事件
+    public void treatClickEvent(MotionEvent e){
+        Log.v("verf","treatClickEvent");
+        clickPosition = -1;
+        for(int i = 0; i < mData.size(); i ++){
+            Log.v("verf","click data " + i + " "  + mData.get(i).getX() + " " + e.getX());
+            if(e.getX() <= mData.get(i).getX() + valueWidth && e.getX() > mData.get(i).getX()){
+                Log.v("verf","click data xxxxxxxxxxxxxxx");
+                clickPosition = i;
+                if(listener != null){
+                    listener.onChartItemClick(i);
+                }
+            }
+        }
+        invalidate();
     }
 }

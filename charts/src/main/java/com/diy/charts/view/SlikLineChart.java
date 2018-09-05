@@ -200,17 +200,20 @@ public class SlikLineChart extends View implements DetorListener{
            Path path = new Path();
            path.moveTo(sourcex, sourcey);
            ArrayList<PointBean> points = new ArrayList<>();
+            float lastx = sourcex;
+            float lasty = sourcey;
            for(int j = 0; j < bean.getData().size(); j ++){
                float x = sourcex + valueWidth * (j + 1);
                float y =  animationValue * (sourcey - valueHeight * bean.getData().get(j).getValue());
                float y0 = getMeasuredHeight() - PADDING_BOTTOM - zeroHeight; //0刻度的纵坐标
                y = y0 - animationValue * (valueHeight * bean.getData().get(j).getValue() - (sourcey - y0));
-               path.lineTo(x,y);
+               path.quadTo(lastx,lasty,(x + lastx)/2, (y + lasty)/2);
+               lastx = x;
+               lasty = y;
                bean.getData().get(j).setXY(x,y);
                points.add(new PointBean(x,y,"" + bean.getData().get(j).getValue()));
                defaultPaint.setTextSize(bean.getNumTextsize());
                defaultPaint.setColor(bean.getCirclecolor());
-
            }
            defaultPaint.setColor(bean.getLinecolor());
            canvas.drawPath(path,defaultPaint);
