@@ -52,7 +52,9 @@ public class HorizontalStackBarChart extends BaseAxisChart<MutiBarChartBean> {
                canvas.drawRect(startX, startY + 5, endX, endY, defaultPaint);
                float txtWidth = mChartPaint.measureText("" + mData.get(i).getValues().get(j));
                float txtheight = mChartPaint.measureText("X");
-               canvas.drawText("" + mData.get(i).getValues().get(j),endX - txtWidth - 5, endY - valueHeight/2 + txtheight/2,mChartPaint);
+               if(mData.get(i).getValues().get(j) != 0) {
+                   canvas.drawText("" + mData.get(i).getValues().get(j), endX - txtWidth - 5, endY - valueHeight / 2 + txtheight / 2, mChartPaint);
+               }
                startX = endX;
                startY = endY - valueHeight;
            }

@@ -65,7 +65,9 @@ public class VerticalStackBarChart extends BaseAxisChart<MutiBarChartBean> {
                 if(clikPostion == i){
                     defaultPaint.setColor(Color.WHITE);
                 }
-                canvas.drawText("" + mData.get(i).getValues().get(j),startX + valueWidth/2 - txtWidth/2, endY +  txtheight + 5 ,mChartPaint);
+                if(mData.get(i).getValues().get(j) != 0) {
+                    canvas.drawText("" + mData.get(i).getValues().get(j), startX + valueWidth / 2 - txtWidth / 2, endY + txtheight + 5, mChartPaint);
+                }
                 startY = endY;
             }
         }

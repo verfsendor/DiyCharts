@@ -88,8 +88,8 @@ public abstract class BaseAxisChart<T extends SimpleEntry> extends View implemen
             TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.BaseAxisChart);
             mTextColor = typedArray.getColor(R.styleable.BaseAxisChart_BaseAxisChart_TextColor, mTextColor);
             mChartColor = typedArray.getColor(R.styleable.BaseAxisChart_BaseAxisChart_ChartColor, mChartColor);
-            axisWidth = typedArray.getColor(R.styleable.BaseAxisChart_BaseAxisChart_XAxis, (int) axisWidth);
-            axisHeight = typedArray.getColor(R.styleable.BaseAxisChart_BaseAxisChart_YAxis, (int) axisHeight);
+            axisWidth = typedArray.getDimension(R.styleable.BaseAxisChart_BaseAxisChart_XAxis,  axisWidth);
+            axisHeight = typedArray.getDimension(R.styleable.BaseAxisChart_BaseAxisChart_YAxis,  axisHeight);
             typedArray.recycle();
         }
     }
