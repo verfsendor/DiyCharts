@@ -45,7 +45,6 @@ public class ChartUtil {
         float result = value;
         BigDecimal b = new BigDecimal(result);
         result =b.setScale(n, BigDecimal.ROUND_HALF_UP).floatValue();
-        Log.v("verf","getFloatDecimal " + value + " " + n + " " + result);
         return result;
     }
 }

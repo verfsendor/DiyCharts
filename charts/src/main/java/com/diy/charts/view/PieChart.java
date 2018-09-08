@@ -290,11 +290,8 @@ public class PieChart extends View {
                 if(pointBean.getY() > getMeasuredHeight()/2 && pointBean.getX() > getMeasuredWidth()/2  && degree2 == 360){
                     degree2 = 0;
                 }
-                Log.v("verf", "startAngel 1 " + startAngel);
                 startAngel += (degree2 - degree1);
-                Log.v("verf", "startAngel 2 " + startAngel);
                 startAngel = startAngel % 360;
-                Log.v("verf"," degree2 " + degree2 + " " + degree1 + " " + startAngel);
                 pointBean.setX(event.getX());
                 pointBean.setY(event.getY());
                 invalidate();

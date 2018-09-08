@@ -177,7 +177,6 @@ public class SlikLineChart extends View implements DetorListener {
 
     public void setData(ArrayList<SlikLineChartBean> data){
         slikChartAdapter.setData(data);
-        Log.v("verf","data size " + data.size());
         calPos();
         showStartAnimation();
     }

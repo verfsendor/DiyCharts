@@ -129,7 +129,6 @@ public class AttributeChart extends SurfaceView {
                 focusX = detector.getFocusX();
                 focusY = detector.getFocusY();
                 scaleValue = scaleValue * detector.getScaleFactor();
-                Log.v("aaaa","getScaleFactor " + detector.getScaleFactor() + " " + scaleValue);
                 //设置最大缩放比例
                 if(scaleValue > 3){
                     scaleValue =3;
@@ -380,7 +379,6 @@ public class AttributeChart extends SurfaceView {
         for(int i = getMeasuredWidth()/2 - LINE_WIDTH; i > CHART_PADDING; i = i - LINE_WIDTH){
             Path path = new Path();
             path.addCircle(getMeasuredWidth()/2, getMeasuredHeight()/2, getMeasuredWidth()/2 - i, Path.Direction.CCW);
-            Log.v("verf","name add path " + path);
             mPaths.add(path);
             PathMeasure measure = new PathMeasure(path, false);     // 创建 PathMeasure
             for(int j = 0; j < n ; j ++){

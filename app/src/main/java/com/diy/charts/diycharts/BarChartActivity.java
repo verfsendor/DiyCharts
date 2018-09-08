@@ -60,7 +60,6 @@ public class BarChartActivity extends AppCompatActivity {
         chart.setOnBarChartItemClickListener(new OnChartItemClickListener() {
             @Override
             public void onChartItemClick(int postion1) {
-                Log.v("verf"," setOnBarChartItemClickListener click " + piechartBeans.get(postion1).getName());
             }
         });
     }

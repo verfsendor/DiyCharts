@@ -119,7 +119,6 @@ public class GestureDetorManager {
                 if(e1.getPointerCount() > 1 || e2.getPointerCount() > 1){
                     return true;
                 }
-                Log.v("verf","scroll scrollDistanceX " + showTotal);
                 //只有当value>1,即图表处于放大状态时才可以拖动
                 if(showTotal){
                     //只有当value>1,即图表处于放大状态时才可以拖动
@@ -132,7 +131,6 @@ public class GestureDetorManager {
                         //不可以往
                     }
                 }else {
-                    Log.v("verf","scroll scrollDistanceX");
                     scrollDistanceX = scrollDistanceX - distanceX;
                     scrollDistanceX = scrollDistanceX - distanceX;
                 }

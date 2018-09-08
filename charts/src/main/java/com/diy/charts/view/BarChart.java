@@ -276,7 +276,6 @@ public class BarChart extends View implements DetorListener {
 
     @Override
     public void onSingleTap(MotionEvent event) {
-        Log.v("verf","onSingleTap");
         treatClickEvent(event);
     }
 
@@ -368,12 +367,9 @@ public class BarChart extends View implements DetorListener {
 
     //处理点击事件
     public void treatClickEvent(MotionEvent e){
-        Log.v("verf","treatClickEvent");
         clickPosition = -1;
         for(int i = 0; i < mData.size(); i ++){
-            Log.v("verf","click data " + i + " "  + mData.get(i).getX() + " " + e.getX());
             if(e.getX() <= mData.get(i).getX() + valueWidth && e.getX() > mData.get(i).getX()){
-                Log.v("verf","click data xxxxxxxxxxxxxxx");
                 clickPosition = i;
                 if(listener != null){
                     listener.onChartItemClick(i);
