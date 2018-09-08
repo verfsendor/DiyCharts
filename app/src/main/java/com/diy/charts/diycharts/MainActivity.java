@@ -6,9 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.diy.charts.view.AttributeChart;
-import com.diy.charts.view.BarChart;
+import com.diy.charts.view.HorizontalStackBarChart;
 import com.diy.charts.view.SlikLineChart;
-import com.diy.charts.view.StackBarChart;
 
 public class MainActivity extends AppCompatActivity {
     SlikLineChart chart;
@@ -50,14 +49,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,MutiBarChartActivity.class));
             }
         });
-
         findViewById(R.id.f).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,StackBarChartActivity.class));
             }
         });
+
+        findViewById(R.id.g).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,VerticalStackBarChartActivity.class));
+            }
+        });
     }
-
-
 }

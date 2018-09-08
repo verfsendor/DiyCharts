@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -84,9 +85,11 @@ public abstract class BaseAxisChart<T extends SimpleEntry> extends View implemen
 
     private void getAttrs(AttributeSet attrs){
         if(attrs != null){
-            TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.BarChart);
-            mTextColor = typedArray.getColor(R.styleable.BarChart_BarChart_TextColor, mTextColor);
-            mChartColor = typedArray.getColor(R.styleable.BarChart_BarChart_ChartColor, mChartColor);
+            TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.BaseAxisChart);
+            mTextColor = typedArray.getColor(R.styleable.BaseAxisChart_BaseAxisChart_TextColor, mTextColor);
+            mChartColor = typedArray.getColor(R.styleable.BaseAxisChart_BaseAxisChart_ChartColor, mChartColor);
+            axisWidth = typedArray.getColor(R.styleable.BaseAxisChart_BaseAxisChart_XAxis, (int) axisWidth);
+            axisHeight = typedArray.getColor(R.styleable.BaseAxisChart_BaseAxisChart_YAxis, (int) axisHeight);
             typedArray.recycle();
         }
     }
@@ -95,6 +98,7 @@ public abstract class BaseAxisChart<T extends SimpleEntry> extends View implemen
         getAttrs(attrs);
         gestureDetorManager = new GestureDetorManager(getContext());
         gestureDetorManager.setDetorListener(this);
+        gestureDetorManager.setShowTotal(showTotalData());
         mData = new ArrayList<>();
         initPaint();
 
@@ -320,9 +324,11 @@ public abstract class BaseAxisChart<T extends SimpleEntry> extends View implemen
 
     public void calPos(){
         if(isYshowValue()) {
-            valueWidth = (getMeasuredWidth() - PADDING_LEFT - PADDING_LEFT) / getMaxSize();
+            float maxSize = showTotalData() ? getMaxSize() : getMeasuredWidth()/axisWidth;
+            valueWidth = (getMeasuredWidth() - PADDING_LEFT - PADDING_LEFT) / maxSize;
             valueHeight = (getMeasuredHeight() - PADDING_BOTTOM - PADDING_LEFT - zeroHeight) / (getMaxValue() * 1.1f);
         }else {
+            float maxSize = showTotalData() ? getMaxSize() : (getMeasuredHeight() - PADDING_BOTTOM)/axisHeight;
             valueWidth = (getMeasuredWidth() - PADDING_LEFT - PADDING_LEFT) / (getMaxValue() * 1.1f);
             valueHeight = (getMeasuredHeight() - PADDING_BOTTOM - PADDING_LEFT - zeroHeight) / getMaxSize();
             zeroHeight = 0;
@@ -377,4 +383,11 @@ public abstract class BaseAxisChart<T extends SimpleEntry> extends View implemen
     public abstract float getMaxValue();
 
     public abstract float getMaxSize();
+
+    /**
+     * 默认时整屏显示所有的数据
+     * @return
+     */
+    public abstract boolean showTotalData();
+
 }

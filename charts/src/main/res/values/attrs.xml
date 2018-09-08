@@ -22,4 +22,13 @@
         <attr name="BarChart_ChartColor" format="color"/>
     </declare-styleable>
 
+    <declare-styleable name="BaseAxisChart">
+        <attr name="BaseAxisChart_TextColor" format="color"/>
+        <attr name="BaseAxisChart_ChartColor" format="color"/>
+        <attr name="BaseAxisChart_XAxis" format="dimension"/>
+        <attr name="BaseAxisChart_YAxis" format="dimension"/>
+
+    </declare-styleable>
+
+
 </resources>

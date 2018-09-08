@@ -1,6 +1,7 @@
 package com.diy.charts.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -15,6 +16,7 @@ import com.diy.charts.listener.DetorListener;
  */
 public class GestureDetorManager {
     private Context context;
+    private boolean showTotal = true;//默认状态下缩放比例为1时，是否可以滑动
     private final float MAX_SCALE = 7; //最大缩放比例
     /**
      * 缩放中心以及缩放比例
@@ -117,13 +119,22 @@ public class GestureDetorManager {
                 if(e1.getPointerCount() > 1 || e2.getPointerCount() > 1){
                     return true;
                 }
+                Log.v("verf","scroll scrollDistanceX " + showTotal);
                 //只有当value>1,即图表处于放大状态时才可以拖动
-                if(scaleValueX > 1) {
+                if(showTotal){
+                    //只有当value>1,即图表处于放大状态时才可以拖动
+                    if(scaleValueX > 1) {
+                        scrollDistanceX = scrollDistanceX - distanceX;
+                        //不可以往
+                    }
+                    if(scaleValueX > 1 ) {
+                        scrollDistanceX = scrollDistanceX - distanceX;
+                        //不可以往
+                    }
+                }else {
+                    Log.v("verf","scroll scrollDistanceX");
                     scrollDistanceX = scrollDistanceX - distanceX;
-                    //不可以往
-                }
-                if(scaleValueY > 1) {
-                    scrollDistanceY = scrollDistanceY - distanceY;
+                    scrollDistanceX = scrollDistanceX - distanceX;
                 }
                 if(listener != null){
                     listener.refreshView();
@@ -169,6 +180,14 @@ public class GestureDetorManager {
         mScaleGestureDetector.onTouchEvent(event);
         mGesturDetector.onTouchEvent(event);
        return true;
+    }
+
+    public boolean isShowTotal() {
+        return showTotal;
+    }
+
+    public void setShowTotal(boolean showTotal) {
+        this.showTotal = showTotal;
     }
 
     public void setDetorListener(DetorListener listener){

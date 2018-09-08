@@ -22,6 +22,7 @@
         <activity android:name=".BarChartActivity"/>
         <activity android:name=".MutiBarChartActivity"/>
         <activity android:name=".StackBarChartActivity"/>
+        <activity android:name=".VerticalStackBarChartActivity"/>
 
     </application>
 

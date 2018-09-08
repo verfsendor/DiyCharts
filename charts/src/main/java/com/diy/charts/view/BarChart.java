@@ -21,7 +21,7 @@ import com.diy.charts.charts.R;
 import com.diy.charts.formatter.AxisFormatter;
 import com.diy.charts.formatter.SlimChartAxisFormatter;
 import com.diy.charts.listener.DetorListener;
-import com.diy.charts.listener.OnBarChartItemClickListener;
+import com.diy.charts.listener.OnChartItemClickListener;
 import com.diy.charts.utils.GestureDetorManager;
 
 import java.math.BigDecimal;
@@ -41,7 +41,7 @@ public class BarChart extends View implements DetorListener {
     private Paint defaultPaint;//多用画图
     private Paint clickPaint;//多用画图
     private boolean drawNum = true;
-    private OnBarChartItemClickListener listener;
+    private OnChartItemClickListener listener;
     private boolean rePicture = true;//重新录制
     private Picture picture;
 
@@ -362,7 +362,7 @@ public class BarChart extends View implements DetorListener {
         return result;
     }
 
-    public void setOnBarChartItemClickListener(OnBarChartItemClickListener listener){
+    public void setOnBarChartItemClickListener(OnChartItemClickListener listener){
         this.listener = listener;
     }
 

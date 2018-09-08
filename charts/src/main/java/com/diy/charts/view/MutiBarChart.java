@@ -122,6 +122,11 @@ public class MutiBarChart extends BaseAxisChart<MutiBarChartBean> {
         return mData.size();
     }
 
+    @Override
+    public boolean showTotalData() {
+        return true;
+    }
+
     public void setData(ArrayList<MutiBarChartBean> values, ArrayList<MutiBean> mutis){
         this.mutis = mutis;
         setData(values);

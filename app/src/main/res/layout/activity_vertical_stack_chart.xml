@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.diy.charts.view.HorizontalStackBarChart
+    <com.diy.charts.view.VerticalStackBarChart
         android:id="@+id/chart"
         android:layout_width="400dp"
         android:layout_height="400dp" />

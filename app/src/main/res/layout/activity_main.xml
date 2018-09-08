@@ -39,6 +39,12 @@
         android:id="@+id/f"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="堆积条形图"/>
+        android:text="水平堆积条形图"/>
+
+    <Button
+        android:id="@+id/g"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="垂直堆积条形图"/>
 
 </LinearLayout>

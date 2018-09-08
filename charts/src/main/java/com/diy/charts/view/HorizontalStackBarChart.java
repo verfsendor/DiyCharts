@@ -11,21 +11,22 @@ import com.diy.charts.beans.MutiBean;
 import java.util.ArrayList;
 
 /**
+ * 水平堆积图
  * Created by xuzhendong on 2018/9/2.
  */
 
-public class StackBarChart extends BaseAxisChart<MutiBarChartBean> {
+public class HorizontalStackBarChart extends BaseAxisChart<MutiBarChartBean> {
     public ArrayList<MutiBean> mutis;//分项目的种类
 
-    public StackBarChart(Context context) {
+    public HorizontalStackBarChart(Context context) {
         super(context);
     }
 
-    public StackBarChart(Context context, @Nullable AttributeSet attrs) {
+    public HorizontalStackBarChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public StackBarChart(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public HorizontalStackBarChart(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -122,6 +123,11 @@ public class StackBarChart extends BaseAxisChart<MutiBarChartBean> {
     @Override
     public float getMaxSize() {
         return mData.size() + 0.5f;
+    }
+
+    @Override
+    public boolean showTotalData() {
+        return true;
     }
 
     public void setData(ArrayList<MutiBarChartBean> values, ArrayList<MutiBean> mutis){

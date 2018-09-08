@@ -7,10 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.diy.charts.beans.BarChartBean;
-import com.diy.charts.beans.PiechartBean;
-import com.diy.charts.listener.OnBarChartItemClickListener;
+import com.diy.charts.listener.OnChartItemClickListener;
 import com.diy.charts.view.BarChart;
-import com.diy.charts.view.PieChart;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -59,7 +57,7 @@ public class BarChartActivity extends AppCompatActivity {
             piechartBeans.add(bean5);
         }
         chart.setData(piechartBeans);
-        chart.setOnBarChartItemClickListener(new OnBarChartItemClickListener() {
+        chart.setOnBarChartItemClickListener(new OnChartItemClickListener() {
             @Override
             public void onChartItemClick(int postion1) {
                 Log.v("verf"," setOnBarChartItemClickListener click " + piechartBeans.get(postion1).getName());
