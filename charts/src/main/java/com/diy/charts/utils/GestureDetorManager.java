@@ -126,13 +126,13 @@ public class GestureDetorManager {
                         scrollDistanceX = scrollDistanceX - distanceX;
                         //不可以往
                     }
-                    if(scaleValueX > 1 ) {
-                        scrollDistanceX = scrollDistanceX - distanceX;
+                    if(scaleValueY > 1 ) {
+                        scrollDistanceY = scrollDistanceY - distanceY;
                         //不可以往
                     }
                 }else {
                     scrollDistanceX = scrollDistanceX - distanceX;
-                    scrollDistanceX = scrollDistanceX - distanceX;
+                    scrollDistanceY = scrollDistanceY - distanceY;
                 }
                 if(listener != null){
                     listener.refreshView();
